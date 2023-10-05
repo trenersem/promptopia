@@ -1,5 +1,5 @@
-import Prompt from "@models/prompt";
-import { connectToDB } from "@utils/database";
+import Prompt from "@/models/prompt";
+import { connectToDB } from "@/utils/database";
 
 
 export const GET = async (request, { params }) => {
@@ -32,7 +32,7 @@ export const PATCH = async (request, { params }) => {
         existingPrompt.prompt = prompt;
         existingPrompt.tag = tag;
 
-    
+        existingPrompt.save();
 
         return new Response("Successfully updated the Prompts", { status: 200 });
     } catch (error) {

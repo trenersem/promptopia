@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -25,32 +27,30 @@ const EditPrompt = () => {
     if (promptId) getPromptDetails();
   }, [promptId]);
 
-    const updatePrompt = async (e: React.FormEvent<HTMLFormElement>): Promise<void>=> {
+    const updatePrompt = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsSubmitting(true);
 
     if (!promptId) return alert("Missing PromptId!");
 
     try {
-      
-      const resoponse = await fetch(`/api/prompt/${promptId}`, {
-        method: 'PATCH',
+      const response = await fetch(`/api/prompt/${promptId}`, {
+        method: "PATCH",
         body: JSON.stringify({
           prompt: post.prompt,
-          tag: post.tag
+          tag: post.tag,
         }),
       });
 
-      if(resoponse.ok) {
-        router.push('/')
+      if (response.ok) {
+        router.push("/");
       }
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.log(error);
     } finally {
       setIsSubmitting(false);
     }
-
-    }
+  };
 
 
   return (
