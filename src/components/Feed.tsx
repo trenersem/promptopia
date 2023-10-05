@@ -3,10 +3,10 @@
 import { useState, useEffect, ChangeEvent } from "react";
 
 import PromptCard from "./PromptCard";
-import { EPoromt } from "@/app/types";
+import { EPromt } from "@/app/types";
 
 interface IPromptCardList {
-  data: EPoromt[],
+  data: EPromt[],
   handleTagClick: Function,
 }
 const PromptCardList = ({data, handleTagClick}: IPromptCardList) =>(

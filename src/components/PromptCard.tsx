@@ -3,17 +3,21 @@ import { useState  } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { EPoromt } from '@/app/types';
+import { EPromt } from '@/app/types';
 
 interface IPromptCard {
-  post: EPoromt,
-  handleTagClick: Function,
-  handleEdit: Function,
-  handleDelete: Function,
+  post: EPromt,
+  handleTagClick?: Function,
+  handleEdit?: Function,
+  handleDelete?: Function,
 
 }
 const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCard) => {
-  const [copied, setCopied] = useState('')
+  const [copied, setCopied] = useState('');
+
+  const session = useSession();
+  const pathName = usePathname();
+  const router = useRouter();
 
   const hanleCopy = () => {
     setCopied(post.prompt);
@@ -53,7 +57,7 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCar
             src={copied === post.prompt ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'}
             width={12}
             height={12}
-            alt='copy button'
+            alt={copied === post.prompt ? "tick_icon" : "copy_icon"}
           />
 
         </div>
@@ -68,6 +72,25 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCar
       >
         {post.tag}
       </p>
+
+      {session?.user?.id === post.creator.id &&
+      pathName === '/profile' && (
+        <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
+          <p
+            className='font-inter text-sm green_gradient cursor-pointer'
+            onClick={() => handleEdit && handleEdit()}
+          >
+            Edit
+          </p>
+          <p
+            className='font-inter text-sm orange_gradient cursor-pointer'
+            onClick={() => handleDelete && handleDelete()}
+          >
+            Delete
+          </p>
+        </div>
+      )
+      }
     </div>
   )
 }
