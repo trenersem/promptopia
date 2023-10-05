@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Profile from '@/components/Profile';
-import { EPromt, IUser } from "../types";
+import { EPromt } from "../types";
 
 const MyProfile = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
-  const userId = (session?.user as IUser).id
+  const userId = session?.user?.id
 
   const [myPosts, setMyPosts] = useState< EPromt[] | []>([]);
 

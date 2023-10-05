@@ -3,7 +3,7 @@ import { useState  } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { EPromt, IUser } from '@/app/types';
+import { EPromt } from '@/app/types';
 
 interface IPromptCard {
   post: EPromt,
@@ -73,7 +73,7 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCar
         {post.tag}
       </p>
 
-      {(session?.user as IUser).id === post.creator.id &&
+      {session?.user?.id === post.creator.id &&
       pathName === '/profile' && (
         <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
           <p
