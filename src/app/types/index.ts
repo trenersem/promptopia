@@ -3,7 +3,7 @@ export interface IUser {
       email: string
       username: string,
       image: string,
-}
+};
 export interface ICreator {
     id: any,
     username: string,
