@@ -22,21 +22,26 @@ const PromptCardList = ({data, handleTagClick}: IPromptCardList) =>(
   </div>
 )
 const Feed = () => {
-  const [searchText, setSearchText] = useState('');
-  const [allPosts, setAllPosts] = useState([]);
+    const [allPosts, setAllPosts] =  useState< EPromt[] | []>([]);
+
+  // Search states
+  const [searchText, setSearchText] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [searchedResults, setSearchedResults] = useState([]);
+
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
   
-  useEffect(() => {
-    const fetchPost = async () => {
-      const res = await fetch('/api/prompt');
-      const data = await res.json();
+  const fetchPosts = async () => {
+    const response = await fetch("/api/prompt");
+    const data: EPromt[] = await response.json();
 
-      setAllPosts(data)
-      
-    }
-    fetchPost();
+    setAllPosts(data);
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
   return (
     <section className="feed">
