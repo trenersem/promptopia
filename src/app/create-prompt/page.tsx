@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 
 import Form from '@/components/Form';
-import { IUser } from '../types';
+import { ICreator } from '../types';
 
 export interface IPost {
     prompt: string,
@@ -32,7 +32,7 @@ const CreatePrompt = () => {
                 body: JSON.stringify({
                     prompt: post.prompt,
                     tag: post.tag,
-                    userId: session?.user?.id,
+                    userId:(session?.user as ICreator).id,
 
                 })
             })
