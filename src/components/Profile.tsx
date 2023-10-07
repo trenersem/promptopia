@@ -6,8 +6,8 @@ interface IProfile {
   name: string,
   desc: string,
   data: EPromt[],
-  handleEdit: Function,
-  handleDelete: Function
+  handleEdit?: Function,
+  handleDelete?: Function
 };
 const Profile = ({ name, desc, data, handleEdit, handleDelete }: IProfile) => {
   return (

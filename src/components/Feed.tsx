@@ -24,14 +24,9 @@ const PromptCardList = ({data, handleTagClick}: IPromptCardList) =>(
 const Feed = () => {
     const [allPosts, setAllPosts] =  useState< EPromt[] | []>([]);
 
-  // Search states
   const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
-  const [searchedResults, setSearchedResults] = useState([]);
-
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-  };
+  const [searchTimeout, setSearchTimeout] = useState<number | null>(null);
+  const [searchedResults, setSearchedResults] = useState<EPromt[] | []>([]);
   
   const fetchPosts = async () => {
     const response = await fetch("/api/prompt");
@@ -43,6 +38,46 @@ const Feed = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  const filterPrompts = (searchtext: string) => {
+    const regex = new RegExp(searchtext, "i");
+    return allPosts.filter(
+      (item) =>
+        regex.test(item.creator.username) ||
+        regex.test(item.tag) ||
+        regex.test(item.prompt)
+    );
+  };
+
+  // const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   clearTimeout(searchTimeout);
+  //   setSearchText(e.target.value);
+
+  //   searchTimeout(
+  //     setTimeout(() => {
+  //       const searchResult = filterPrompts(e.target.value);
+  //       setSearchedResults(searchResult);
+  //     }, 500) 
+  //   )
+  // };
+const handleSearchChange = (e:ChangeEvent<HTMLInputElement>) => {
+  clearTimeout(searchTimeout || undefined);
+  setSearchText(e.target.value);
+
+  const timeoutId = window.setTimeout(() => {
+    const searchResult = filterPrompts(e.target.value);
+    setSearchedResults(searchResult);
+  }, 500)
+
+  setSearchTimeout(timeoutId);
+}
+
+  const handleTagClick = (tagName: string) => {
+    setSearchText(tagName);
+
+    const searchResult = filterPrompts(tagName);
+    setSearchedResults(searchResult);
+  };
   return (
     <section className="feed">
       <form className="relative w-full flex-center">
@@ -54,14 +89,15 @@ const Feed = () => {
           required
           className="search_input peer"
         />
-
       </form>
-
-      <PromptCardList
-        data={allPosts}
-        handleTagClick={() => {}}
-
-      />
+        {searchText ? (
+          <PromptCardList
+            data={searchedResults}
+            handleTagClick={handleTagClick}
+          />
+        ) : (
+          <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+        )}
     </section>
   )
 }
