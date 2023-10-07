@@ -17,14 +17,14 @@ const UserProfile = ({params}: IUserProfile) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${params.id}/posts`);
+      const response = await fetch(`/api/users/${params._id}/posts`);
       const data = await response.json();
 
       setUserPosts(data);
     };
 
-    if (params.id) fetchPosts();
-  }, [params.id]);
+    if (params._id) fetchPosts();
+  }, [params._id]);
 
 
   return (
