@@ -5,13 +5,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Profile from '@/components/Profile';
-import { EPromt, ICreator, IUser } from "../types";
-
+import { EPromt, } from "../types";
+import { AdapterUser } from "next-auth/adapters";
+import { Session } from "next-auth";
+import { useCustomSession } from "@/hooks/useCustomSessin";
+export interface Custom extends AdapterUser {
+    id: any
+}
 const MyProfile = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
-  const userId = session?.user?.id
+  const {userId} = useCustomSession();
 
   const [myPosts, setMyPosts] = useState< EPromt[] | []>([]);
 
@@ -39,7 +44,7 @@ const MyProfile = () => {
 
         })
 
-        const filteredPosts = myPosts.filter((p) => p._id !== post._id);
+        const filteredPosts = myPosts.filter((p: EPromt) => p._id !== post._id);
 
         setMyPosts(filteredPosts)
       } catch (err) {

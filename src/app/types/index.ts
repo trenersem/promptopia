@@ -1,11 +1,5 @@
-export interface IUser {
-      _id: any
-      email: string
-      username: string,
-      image: string,
-};
 export interface ICreator {
-    id: any,
+    _id: any,
     username: string,
     email: string,
     image: string

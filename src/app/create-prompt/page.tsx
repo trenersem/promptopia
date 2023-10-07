@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import Form from '@/components/Form';
 import { ICreator } from '../types';
+import { useCustomSession } from '@/hooks/useCustomSessin';
 
 export interface IPost {
     prompt: string,
@@ -18,7 +19,7 @@ const CreatePrompt = () => {
         prompt: '',
         tag: '',
     })
-    const { data: session} = useSession();
+    const { userId } = useCustomSession();
     const router = useRouter();
 
     const createPrompt = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -32,7 +33,7 @@ const CreatePrompt = () => {
                 body: JSON.stringify({
                     prompt: post.prompt,
                     tag: post.tag,
-                    userId:(session?.user as ICreator).id,
+                    userId: userId,
 
                 })
             })

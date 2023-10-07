@@ -3,7 +3,8 @@ import { useState  } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { EPromt, ICreator, IUser } from '@/app/types';
+import { EPromt } from '@/app/types';
+import { useCustomSession } from '@/hooks/useCustomSessin';
 
 interface IPromptCard {
   post: EPromt,
@@ -15,7 +16,7 @@ interface IPromptCard {
 const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCard) => {
   const [copied, setCopied] = useState('');
 
-  const { data: session} = useSession();
+   const {userId} = useCustomSession();
   const pathName = usePathname();
   const router = useRouter();
 
@@ -30,9 +31,9 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCar
    const handleProfileClick = () => {
     console.log(post);
 
-    if (post.creator.id === session?.user?.id) return router.push("/profile");
+    if (post.creator._id === userId) return router.push("/profile");
 
-    router.push(`/profile/${post.creator.id}?name=${post.creator.username}`);
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
   };
 
   return (
@@ -84,7 +85,7 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCar
         {post.tag}
       </p>
 
-      {session?.user?._id === post.creator.id &&
+      {userId === post.creator._id &&
       pathName === '/profile' && (
         <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
           <p
