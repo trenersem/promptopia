@@ -42,7 +42,6 @@ const Nav = () => {
                     >
                         Create Post
                     </Link>
-
                     <button
                         type='button'
                         onClick={() => signOut()}
