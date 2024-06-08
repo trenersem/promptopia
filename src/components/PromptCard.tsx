@@ -23,6 +23,8 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}: IPromptCar
   const hanleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt)
+
+
     setTimeout(() => {
       setCopied('')
     }, 3000)
